@@ -143,13 +143,16 @@ Module.register("weatherforecast",{
 			iconCell.appendChild(icon);
 
 			var degreeLabel = "";
+			if (this.config.units === "metric" || this.config.units === "imperial") {
+				degreeLabel += "°";
+			}
 			if(this.config.scale) {
 				switch(this.config.units) {
 				case "metric":
-					degreeLabel = " &deg;C";
+					degreeLabel += "C";
 					break;
 				case "imperial":
-					degreeLabel = " &deg;F";
+					degreeLabel += "F";
 					break;
 				case "default":
 					degreeLabel = "K";
@@ -177,7 +180,7 @@ Module.register("weatherforecast",{
 					rainCell.innerHTML = "";
 				} else {
 					if(config.units !== "imperial") {
-						rainCell.innerHTML = forecast.rain + " mm";
+						rainCell.innerHTML = parseFloat(forecast.rain).toFixed(1) + " mm";
 					} else {
 						rainCell.innerHTML = (parseFloat(forecast.rain) / 25.4).toFixed(2) + " in";
 					}
@@ -350,7 +353,7 @@ Module.register("weatherforecast",{
 					icon: this.config.iconTable[forecast.weather[0].icon],
 					maxTemp: this.roundValue(forecast.temp.max),
 					minTemp: this.roundValue(forecast.temp.min),
-					rain: this.roundValue(forecast.rain)
+					rain: forecast.rain
 				};
 
 				this.forecast.push(forecastData);
